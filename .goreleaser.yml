@@ -26,3 +26,11 @@ archives:
         format: zip
 release:
   prerelease: auto
+brews:
+  - description: "Branch delete tool made by Golang"
+    github:
+      owner: jiko21
+      name: homebrew-gomi
+    homepage: "https://jiko21.me/GOMI"
+    install: |
+      bin.install: "gomi"
