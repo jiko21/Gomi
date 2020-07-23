@@ -33,4 +33,4 @@ brews:
       name: homebrew-gomi
     homepage: "https://jiko21.me/GOMI"
     install: |
-      bin.install: "gomi"
+      bin.install "gomi"
