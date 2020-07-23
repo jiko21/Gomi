@@ -14,7 +14,8 @@ func main() {
 	app.Usage = "Branch delete tool made by Golang"
 	app.Version = "0.0.1"
 	app.Action = func(c *cli.Context) error {
-		git.Delete()
+		gitInst := git.ConstructGit(".gomiignore")
+		gitInst.Delete()
 		return nil
 	}
 

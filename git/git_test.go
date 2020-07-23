@@ -98,3 +98,95 @@ func Test_isCurrentBranch(t *testing.T) {
 		})
 	}
 }
+
+func Test_loadGomiIgnore(t *testing.T) {
+	type args struct {
+		path string
+	}
+	tests := []struct {
+		name string
+		args args
+		want []string
+	}{
+		{
+			"should load gomiigore",
+			args{
+				".gomiignore.test",
+			},
+			[]string{
+				"master",
+				"hoge",
+			},
+		},
+		{
+			"should return default file when gomiignore not found",
+			args{
+				".gomiignore",
+			},
+			[]string{
+				"master",
+				"develop",
+				"release",
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := loadGomiIgnore(tt.args.path); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("loadGomiIgnore() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestGit_isBrachDeletable(t *testing.T) {
+	type fields struct {
+		blockBranches []string
+	}
+	type args struct {
+		branch string
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		args   args
+		want   bool
+	}{
+		{
+			"should master is not deletable",
+			fields{
+				[]string{
+					"master",
+					"develop",
+				},
+			},
+			args{
+				"master",
+			},
+			false,
+		},
+		{
+			"should hogehoge not deletable",
+			fields{
+				[]string{
+					"master",
+					"develop",
+				},
+			},
+			args{
+				"hogehoge",
+			},
+			true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			g := &Git{
+				blockBranches: tt.fields.blockBranches,
+			}
+			if got := g.isBrachDeletable(tt.args.branch); got != tt.want {
+				t.Errorf("Git.isBrachDeletable() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
