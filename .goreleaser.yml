@@ -1,4 +1,4 @@
-project_name: GOMI
+project_name: Gomi
 env:
   - GO111MODULE=on
 before:
