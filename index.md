@@ -31,3 +31,20 @@ then,
 ```bash
 brew install gomi
 ```
+
+## Features
+
+### branch delete block
+You can specify the branches that you don't want to delete.
+
+You can specify them with `.gomiignore`, on your project root.
+
+If you don't use `.gomiignore`, then default rule will be adopted; `master`, `develop`, `release` cannot be deleted by gomi.
+
+The example of `.gomiignore` is shown below.
+
+```
+master
+do-not-delete-branch
+master-xxx
+```
