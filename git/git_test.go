@@ -125,6 +125,7 @@ func Test_loadGomiIgnore(t *testing.T) {
 			},
 			[]string{
 				"master",
+				"main",
 				"develop",
 				"release",
 			},
