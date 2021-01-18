@@ -28,9 +28,10 @@ release:
   prerelease: auto
 brews:
   - description: "Branch delete tool made by Golang"
-    github:
+    tap:
       owner: jiko21
       name: homebrew-gomi
+      token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
     homepage: "https://jiko21.me/GOMI"
     install: |
       bin.install "gomi"
