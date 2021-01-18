@@ -63,6 +63,7 @@ func loadGomiIgnore(path string) []string {
 	if err != nil {
 		return []string{
 			"master",
+			"main",
 			"develop",
 			"release",
 		}
