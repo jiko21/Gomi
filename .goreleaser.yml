@@ -28,7 +28,7 @@ release:
   prerelease: auto
 brews:
   - description: "Branch delete tool made by Golang"
-    github:
+    tap:
       owner: jiko21
       name: homebrew-gomi
     homepage: "https://jiko21.me/GOMI"
