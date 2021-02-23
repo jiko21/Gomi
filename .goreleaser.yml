@@ -32,6 +32,6 @@ brews:
       owner: jiko21
       name: homebrew-gomi
       token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
-    homepage: "https://jiko21.me/GOMI"
+    homepage: "https://jiko21.me/Gomi"
     install: |
       bin.install "gomi"
