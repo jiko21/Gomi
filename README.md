@@ -41,4 +41,6 @@ The example of `.gomiignore` is shown below.
 master
 do-not-delete-branch
 master-xxx
+# this is comment out
+# this is ignored as gomiignore file
 ```
