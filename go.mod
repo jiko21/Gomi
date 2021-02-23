@@ -2,4 +2,4 @@ module jiko21/gomi
 
 go 1.16
 
-require github.com/urfave/cli v1.22.5
+require github.com/urfave/cli/v2/v2 v2.3.0
