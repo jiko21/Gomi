@@ -73,7 +73,9 @@ func loadGomiIgnore(path string) []string {
 	ignoreBranches := make([]string, 0)
 
 	for fileScanner.Scan() {
-		ignoreBranches = append(ignoreBranches, fileScanner.Text())
+		if fileScanner.Text()[0] != '#' {
+			ignoreBranches = append(ignoreBranches, fileScanner.Text())
+		}
 	}
 	return ignoreBranches
 }
