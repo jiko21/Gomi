@@ -50,17 +50,17 @@ func Test_getBranch(t *testing.T) {
 	}
 	tests := []struct {
 		name string
-		want *[]string
+		want []string
 	}{
 		{
-			"should getBranch correctly returns branch array",
-			&expected,
+			"should getMergedBranch correctly returns branch array",
+			expected,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := getBranch(); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("getBranch() = %v, want %v", got, tt.want)
+			if got, _ := getMergedBranch(); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("getMergedBranch() = %v, want %v", got, tt.want)
 			}
 		})
 	}
@@ -187,6 +187,43 @@ func TestGit_isBrachDeletable(t *testing.T) {
 			}
 			if got := g.isBrachDeletable(tt.args.branch); got != tt.want {
 				t.Errorf("Git.isBrachDeletable() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestGetBranch(t *testing.T) {
+	execCommand = fakeExecCommand
+	testCase = "branch"
+	defer func() { execCommand = exec.Command }()
+
+	expected := []string{
+		"a-branch",
+		"master",
+		"x-branch",
+	}
+
+	tests := []struct {
+		name    string
+		want    []string
+		wantErr bool
+	}{
+		// TODO: Add test cases.
+		{
+			"should GetBranch correctly returns branch array",
+			expected,
+			false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := GetBranch()
+			if (err != nil) != tt.wantErr {
+				t.Errorf("GetBranch() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("GetBranch() = %v, want %v", got, tt.want)
 			}
 		})
 	}
