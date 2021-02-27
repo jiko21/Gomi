@@ -2,7 +2,6 @@ package git
 
 import (
 	"bufio"
-	"fmt"
 	"os"
 	"os/exec"
 	"regexp"
@@ -21,17 +20,24 @@ func ConstructGit(path string) *Git {
 	return &git
 }
 
-func (g *Git) Delete() {
-	items := getBranch()
-	g.deleteMergedBranch(items)
+func (g *Git) Delete() error {
+	items, err := getMergedBranch()
+	if err != nil {
+		return err
+	}
+	return g.deleteMergedBranch(&items)
 }
 
-func (g *Git) deleteMergedBranch(branches *[]string) {
+func (g *Git) deleteMergedBranch(branches *[]string) error {
 	for _, branch := range *branches {
 		if !isCurrentBranch(branch) && g.isBrachDeletable(branch) {
-			deleteBranch(branch)
+			err := deleteBranch(branch)
+			if err != nil {
+				return err
+			}
 		}
 	}
+	return nil
 }
 
 func (g *Git) isBrachDeletable(branch string) bool {
@@ -44,12 +50,9 @@ func (g *Git) isBrachDeletable(branch string) bool {
 	return true
 }
 
-func deleteBranch(branch string) {
+func deleteBranch(branch string) error {
 	formattedBranchName := strings.Replace(branch, " ", "", -1)
-	err := execCommand("git", "branch", "-d", formattedBranchName).Run()
-	if err != nil {
-		fmt.Errorf(err.Error())
-	}
+	return execCommand("git", "branch", "-d", formattedBranchName).Run()
 }
 
 func isCurrentBranch(branch string) bool {
@@ -80,12 +83,26 @@ func loadGomiIgnore(path string) []string {
 	return ignoreBranches
 }
 
-func getBranch() *[]string {
+func getMergedBranch() ([]string, error) {
 	out, err := execCommand("git", "branch", "--merged").Output()
 	if err != nil {
-		fmt.Errorf(err.Error())
+		return nil, err
 	}
 	items := strings.Split(string(out), "\n")
 	items = items[:len(items)-1]
-	return &items
+	return items, nil
+}
+
+func GetBranch() ([]string, error) {
+	out, err := execCommand("git", "branch").Output()
+	if err != nil {
+		return nil, err
+	}
+	items := strings.Split(string(out), "\n")
+	items = items[:len(items)-1]
+	branches := []string{}
+	for _, item := range items {
+		branches = append(branches, item[2:])
+	}
+	return branches, nil
 }

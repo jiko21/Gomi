@@ -44,3 +44,10 @@ master-xxx
 # this is comment out
 # this is ignored as gomiignore file
 ```
+
+### initialize
+you can generate `.gomiignore` file with command shown below.
+
+```
+$ gomi init
+```
