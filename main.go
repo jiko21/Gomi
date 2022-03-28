@@ -13,7 +13,7 @@ func main() {
 	app := cli.NewApp()
 	app.Name = "GOMI"
 	app.Usage = "Branch delete tool made by Golang"
-	app.Version = "0.3.0"
+	app.Version = "0.3.3"
 	app.Action = func(c *cli.Context) error {
 		if c.NArg() == 1 && c.Args().Get(0) == "init" {
 			initObj, err := initializer.New()
