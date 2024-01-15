@@ -46,9 +46,17 @@ func (i *Initializer) Exec() error {
 		Options: i.branches,
 	}
 	survey.AskOne(prompt, &selectedBranches)
-	err := writeAfterMergeHook()
-	if err != nil {
-		return err
+
+	shouldAutoMerge := false
+	autoMergePrompt := &survey.Confirm{
+		Message: "Do you want to run `gomi` automatically after merging a branch?",
+	}
+	survey.AskOne(autoMergePrompt, &shouldAutoMerge)
+	if shouldAutoMerge {
+		err := writeAfterMergeHook()
+		if err != nil {
+			return err
+		}
 	}
 	return writeGomiignoreFile(selectedBranches)
 }
