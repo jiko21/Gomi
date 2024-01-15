@@ -12,7 +12,7 @@ import (
 func main() {
 	app := cli.NewApp()
 	app.Name = "GOMI"
-	app.Usage = "Branch delete tool made by Golang"
+	app.Usage = "Branch delete tool made with Golangg"
 	app.Version = "1.0.0"
 	app.Action = func(c *cli.Context) error {
 		if c.NArg() == 1 && c.Args().Get(0) == "init" {
