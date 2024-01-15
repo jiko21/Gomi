@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"jiko21/gomi/git"
 	"os"
+	"os/exec"
 
 	"github.com/AlecAivazis/survey/v2"
 )
@@ -12,6 +13,12 @@ import (
 type Initializer struct {
 	branches []string
 }
+
+var POST_MERGE_SHELL = `#! /bin/bash
+gomi
+`
+
+var execCommand = exec.Command
 
 func New() (Initializer, error) {
 	branches, err := git.GetBranch()
@@ -39,6 +46,10 @@ func (i *Initializer) Exec() error {
 		Options: i.branches,
 	}
 	survey.AskOne(prompt, &selectedBranches)
+	err := writeAfterMergeHook()
+	if err != nil {
+		return err
+	}
 	return writeGomiignoreFile(selectedBranches)
 }
 
@@ -55,6 +66,23 @@ func writeGomiignoreFile(branches []string) error {
 		fmt.Fprintln(w, branch)
 	}
 	return w.Flush()
+}
+
+func writeAfterMergeHook() error {
+	f, err := os.Create(".git/hooks/post-merge")
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+	_, err = f.Write([]byte(POST_MERGE_SHELL))
+	if err != nil {
+		return err
+	}
+	_, err = execCommand("chmod", "a+x", ".git/hooks/post-merge").Output()
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func isGomiignoreExists() bool {
